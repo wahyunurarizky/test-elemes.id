@@ -1,9 +1,13 @@
 NODE_ENV=development
 PORT=3000
-DATABASE=mongodb+srv://xxxx:<PASSWORD>@clusterx.xxxx.mongodb.net/test?retryWrites=true&w=majority
+DATABASE=mongodb+srv://testDev:<PASSWORD>@cluster0.ukmnt.mongodb.net/test_elemesid?retryWrites=true&w=majority
 # DATABASE_LOCAL=mongodb://localhost:27017/db_name
-DATABASE_PASSWORD=db_password
+DATABASE_PASSWORD=test1234
 
 JWT_SECRET=my-ultra-secure-secret
 JWT_EXPIRES_IN=30d
 JWT_COOKIE_EXPIRES_IN=15
+
+CLOUDINARY_CLOUD_NAME=dxzx8jrts
+CLOUDINARY_API_KEY=298642327947748
+CLOUDINARY_API_SECRET=1ql7z2_nZ6JJWlROfDpOjeg5WGg
