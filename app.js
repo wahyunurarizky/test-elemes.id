@@ -6,11 +6,15 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
-// const compression = require('compression');
+const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 
 const userRouter = require('./routes/userRoutes');
+const courseRouter = require('./routes/courseRoutes');
+const categoryRouter = require('./routes/categoryRoutes');
+const statRouter = require('./routes/statRoutes');
 
 // *****************************declare app**************************
 const app = express();
@@ -35,6 +39,9 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '15kb' }));
 app.use(express.urlencoded({ extended: true, limit: '15kb' }));
 
+// cookie-parser
+app.use(cookieParser());
+
 // data sanitization after body parser is perfect place
 // 1) data sanitization against nosql query injection
 app.use(mongoSanitize());
@@ -54,11 +61,14 @@ app.use(
 // serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(compression());
+app.use(compression());
 
 // *************************ROUTES***************************
 
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/courses', courseRouter);
+app.use('/api/v1/categories', categoryRouter);
+app.use('/api/v1/stats', statRouter);
 
 // handling un handled routes
 // all means get,post and etc

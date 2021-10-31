@@ -17,7 +17,7 @@ const handleDuplicateFieldsDB = (err) => {
   //   input: 'E11000 duplicate key error collection: natours.tours index: name_1 dup key: { name: "The Forest Hiker" }',
   //   groups: undefined
   // ]
-  return new AppError(`duplicates value ${value}`, 400);
+  return new AppError(`duplicates value, ${value} already used`, 400);
 };
 
 const handleValidationErrorDB = (err) => {

@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
+const cloudinary = require('../utils/cloudinary');
 
 const filterObj = (obj, allowedFields) => {
   const newObj = {};
@@ -10,11 +11,14 @@ const filterObj = (obj, allowedFields) => {
   return newObj;
 };
 
-exports.deleteOne = (Model) =>
+exports.deleteOne = (Model, file) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
     if (!doc) {
       return next(new AppError('no docs found with that id', 404));
+    }
+    if (file) {
+      await cloudinary.uploader.destroy(doc[file]);
     }
     res.status(204).json({
       status: 'success',
@@ -26,6 +30,11 @@ exports.updateOne = (Model, ...fields) =>
   catchAsync(async (req, res, next) => {
     const filteredBody = filterObj(req.body, fields);
 
+    if (req.file) {
+      const r = await cloudinary.uploader.upload(req.file.path);
+      filteredBody[req.file.fieldname] = r.secure_url;
+      filteredBody.imageCoverId = r.public_id;
+    }
     const updatedDoc = await Model.findByIdAndUpdate(
       req.params.id,
       filteredBody,
@@ -38,6 +47,7 @@ exports.updateOne = (Model, ...fields) =>
     if (!updatedDoc) {
       return next(new AppError('no docs found with that id', 404));
     }
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -49,6 +59,12 @@ exports.updateOne = (Model, ...fields) =>
 exports.createOne = (Model, ...fields) =>
   catchAsync(async (req, res, next) => {
     const filteredBody = filterObj(req.body, fields);
+
+    if (req.file) {
+      const r = await cloudinary.uploader.upload(req.file.path);
+      filteredBody[req.file.fieldname] = r.secure_url;
+      filteredBody.imageCoverId = r.public_id;
+    }
 
     const doc = await Model.create(filteredBody);
 
