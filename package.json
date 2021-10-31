@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate-express-mongodb-arzky",
+  "name": "test-elemesid",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js"
   },
-  "author": "arzky",
+  "author": "wahyunurarizky",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.32.0",
